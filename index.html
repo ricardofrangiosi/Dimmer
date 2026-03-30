@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabalho Investigativo – Dimmer TRIAC 220V/1500W | IFB Campus Ceilândia</title>
+    <meta name="description" content="Trabalho investigativo pré-laboratório sobre circuito dimmer com TRIAC para Eletrônica de Potência.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+
+        :root {
+            --bg-primary: #ffffff; /* White */
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #334155; /* Graphite */
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --accent-blue: #2563eb; /* Pen-blue */
+            --accent-sepia: #b45309; /* Sepia */
+            --border-color: #cbd5e1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* ======= HEADER ======= */
+        .header {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px 0 50px;
+            border-bottom: 2px dashed var(--accent-blue);
+        }
+        .header-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        .institution-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .institution-name {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .professor-name {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .header h1 {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            color: var(--accent-blue);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .header-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .header-meta {
+            display: flex;
+            gap: 20px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        .meta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--accent-blue);
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .meta-badge .icon { font-size: 1rem; }
+
+        /* ======= MAIN ======= */
+        .main-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 30px 80px;
+        }
+
+        /* ======= SECTION ======= */
+        .section {
+            margin-bottom: 48px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .section-icon {
+            font-size: 1.5rem;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .section-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--accent-sepia);
+            border-bottom: 2px solid var(--accent-sepia);
+            padding-bottom: 4px;
+            display: inline-block;
+        }
+
+        /* ======= CARDS ======= */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--text-primary);
+            border-radius: 0;
+            padding: 28px;
+            margin-bottom: 18px;
+            box-shadow: 4px 4px 0px var(--text-primary);
+        }
+        .card p, .card li {
+            color: var(--text-primary);
+            font-size: 0.92rem;
+            line-height: 1.8;
+        }
+        .card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: var(--accent-blue);
+        }
+        .card ul, .card ol { padding-left: 22px; }
+        .card li { margin-bottom: 8px; }
+
+        /* ======= ACTIVITY CARDS ======= */
+        .activity-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--text-primary);
+            border-radius: 0;
+            padding: 30px;
+            margin-bottom: 24px;
+            box-shadow: 4px 4px 0px var(--text-primary);
+            position: relative;
+        }
+        .activity-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 6px; height: 100%;
+            background: var(--accent-blue);
+        }
+        .activity-number {
+            display: inline-block;
+            background: var(--accent-blue);
+            color: white;
+            padding: 4px 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+        }
+        .activity-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        .activity-card p, .activity-card li {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.8;
+            margin-bottom: 14px;
+        }
+        .activity-card ul, .activity-card ol {
+            padding-left: 22px;
+            margin-bottom: 14px;
+        }
+
+        .question-box {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px dashed var(--text-muted);
+            padding: 18px 22px;
+            margin-top: 16px;
+        }
+        .question-box h4 {
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            color: var(--accent-sepia);
+        }
+        .question-box ol { padding-left: 22px; }
+        .question-box li {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.8;
+            margin-bottom: 6px;
+        }
+
+        /* ======= COMPONENT TABLE ======= */
+        .component-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.88rem;
+            border: 2px solid var(--text-primary);
+            background: white;
+        }
+        .component-table thead th {
+            background: var(--text-primary);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.72rem;
+            padding: 12px 16px;
+            text-align: left;
+            border: 1px solid var(--text-primary);
+        }
+        .component-table tbody td {
+            padding: 11px 16px;
+            border: 1px solid var(--text-primary);
+            color: var(--text-primary);
+        }
+        .component-table code {
+            font-family: 'JetBrains Mono', monospace;
+            background: transparent;
+            font-size: 0.82rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        /* ======= SAFETY BOX ======= */
+        .safety-box {
+            background: white;
+            border: 2px dashed var(--accent-sepia);
+            padding: 24px 28px;
+            margin: 24px 0;
+            box-shadow: 4px 4px 0px var(--accent-sepia);
+        }
+        .safety-box h4 {
+            color: var(--accent-sepia);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .safety-box ul { padding-left: 20px; }
+        .safety-box li {
+            color: var(--text-primary);
+            font-size: 0.88rem;
+            line-height: 1.8;
+            margin-bottom: 4px;
+        }
+
+        /* ======= CRITERIA ======= */
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .criteria-item {
+            background: white;
+            border: 2px solid var(--text-primary);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 3px 3px 0px var(--text-primary);
+        }
+        .criteria-item .weight {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            margin-bottom: 6px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .criteria-item .label {
+            font-size: 0.82rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ======= FOOTER ======= */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 2px dashed var(--accent-blue);
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        /* ======= PRINT ======= */
+        @media print {
+            body { background: #fff; color: #1a1a1a; box-shadow: none; }
+            .header { background: #fff; border-bottom: 2px solid #333; }
+            .card, .activity-card { box-shadow: none; border: 1px solid #333; break-inside: avoid; }
+            .safety-box { box-shadow: none; border: 2px dashed #b45309; }
+            .criteria-item { box-shadow: none; border: 1px solid #333; }
+            .activity-card::before { display: none; }
+            .component-table { border: 1px solid #333; }
+            .component-table thead th { background: #eee; color: #333; border: 1px solid #333; }
+            .component-table tbody td { border: 1px solid #333; color: #333; }
+        }
+
+        @media (max-width: 600px) {
+            .header { padding: 24px 0 30px; }
+            .main-content { padding: 24px 16px 60px; }
+            .card, .activity-card { padding: 20px; }
+            .criteria-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<header class="header">
+    <div class="header-content">
+        <div class="institution-bar">
+            <span class="institution-name">IFB – Instituto Federal de Brasília · Campus Ceilândia</span>
+            <span class="professor-name">Prof. Ricardo Frangiosi de Moura</span>
+        </div>
+        <h1>Trabalho Investigativo Pré-Laboratório</h1>
+        <p class="header-subtitle">Meu Primeiro Dimmer — Controle de Potência AC com TRIAC (220 V / 1500 W)</p>
+        <div class="header-meta">
+            <span class="meta-badge"><span class="icon">⚡</span> Eletrônica de Potência</span>
+            <span class="meta-badge"><span class="icon">👥</span> Individual ou Dupla</span>
+            <span class="meta-badge"><span class="icon">📄</span> Entrega: Relatório Escrito</span>
+            <span class="meta-badge"><span class="icon">📅</span> Prazo: 10/04</span>
+        </div>
+    </div>
+</header>
+
+<!-- ==================== MAIN ==================== -->
+<main class="main-content">
+
+    <!-- APRESENTAÇÃO -->
+    <section class="section">
+        <div class="section-header">
+            <div class="section-icon orange">🎯</div>
+            <h2 class="section-title">Apresentação</h2>
+        </div>
+        <div class="card">
+            <p>
+                Este trabalho investigativo deve ser realizado <strong>antes</strong> da prática de laboratório.
+                O objetivo é que você pesquise, compreenda e documente o funcionamento de cada componente e do circuito como um todo,
+                desenvolvendo não apenas <strong>habilidades técnicas</strong>, mas também <strong>competências analíticas e investigativas</strong>
+                essenciais para a formação de um profissional de eletrônica.
+            </p>
+            <p style="margin-top: 12px;">
+                Ao chegar no laboratório, você deverá ser capaz de explicar o papel de cada componente, justificar os valores de
+                dimensionamento escolhidos, identificar riscos de segurança e propor melhorias ao circuito.
+            </p>
+        </div>
+    </section>
+
+    <!-- ESQUEMA DE REFERÊNCIA / COMPONENTES -->
+    <section class="section">
+        <div class="section-header">
+            <div class="section-icon blue">📋</div>
+            <h2 class="section-title">Componentes do Circuito de Referência</h2>
+        </div>
+        <div class="card">
+            <p style="margin-bottom: 16px;">A tabela a seguir lista os componentes do circuito dimmer proposto. Utilize-a como referência para toda a pesquisa.</p>
+            <table class="component-table">
+                <thead>
+                    <tr>
+                        <th>Ref.</th>
+                        <th>Componente</th>
+                        <th>Especificação</th>
+                        <th>Função no Circuito</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>F1</code></td>
+                        <td>Fusível (Ação Rápida)</td>
+                        <td>10 A</td>
+                        <td>Proteção contra sobrecorrente</td>
+                    </tr>
+                    <tr>
+                        <td><code>MOV</code></td>
+                        <td>Varistor (MOV)</td>
+                        <td>S14K275</td>
+                        <td>Proteção contra surtos de tensão</td>
+                    </tr>
+                    <tr>
+                        <td><code>RV1</code></td>
+                        <td>Potenciômetro</td>
+                        <td>220 kΩ</td>
+                        <td>Ajuste do ângulo de disparo</td>
+                    </tr>
+                    <tr>
+                        <td><code>R1</code></td>
+                        <td>Resistor Fixo</td>
+                        <td>22 kΩ / 1 W</td>
+                        <td>Limitação de corrente mínima</td>
+                    </tr>
+                    <tr>
+                        <td><code>C1</code></td>
+                        <td>Capacitor (Poliéster)</td>
+                        <td>220 nF / 400 V</td>
+                        <td>Rede de defasagem RC</td>
+                    </tr>
+                    <tr>
+                        <td><code>DIAC</code></td>
+                        <td>DIAC</td>
+                        <td>DB3 ou equivalente</td>
+                        <td>Disparo simétrico do gate</td>
+                    </tr>
+                    <tr>
+                        <td><code>T1</code></td>
+                        <td>TRIAC</td>
+                        <td>BTA16-600B (16 A / 600 V)</td>
+                        <td>Chaveamento de potência AC</td>
+                    </tr>
+                    <tr>
+                        <td>—</td>
+                        <td>Dissipador de Calor</td>
+                        <td>R<sub>θha</sub> ≤ 4 °C/W</td>
+                        <td>Dissipação térmica do TRIAC</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SEGURANÇA -->
+    <section class="section">
+        <div class="safety-box">
+            <h4>⚠️ Aviso de Segurança Obrigatório</h4>
+            <ul>
+                <li>Este circuito opera diretamente na <strong>rede elétrica 220 V AC</strong> — tensão potencialmente <strong>letal</strong>.</li>
+                <li>Na prática de laboratório, seguir <strong>rigorosamente</strong> todas as normas de segurança e orientações do professor.</li>
+                <li>O potenciômetro <strong>deve usar knob de plástico</strong> (nunca metálico) para evitar choque elétrico.</li>
+                <li>Nunca tocar no circuito energizado. Sempre desligar e aguardar antes de efetuar medições ou alterações.</li>
+                <li>A pesquisa sobre segurança faz <strong>parte integrante</strong> deste trabalho (ver Atividade 7).</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ==================== ATIVIDADES ==================== -->
+    <section class="section">
+        <div class="section-header">
+            <div class="section-icon green">📝</div>
+            <h2 class="section-title">Atividades de Investigação</h2>
+        </div>
+
+        <!-- ATIVIDADE 1 -->
+        <div class="activity-card act-orange">
+            <div class="activity-number">Atividade 01</div>
+            <h3>Contexto e Aplicação — O que é um Dimmer?</h3>
+            <p>Pesquise o conceito de controle de potência em corrente alternada e a técnica de <strong>controle por ângulo de fase</strong>.</p>
+            <div class="question-box">
+                <h4>Questões Orientadoras</h4>
+                <ol>
+                    <li>O que é um dimmer e quais suas aplicações industriais e residenciais?</li>
+                    <li>Explique o princípio do <strong>controle por ângulo de fase</strong>: como a variação do ângulo de disparo (α) altera a potência entregue à carga?</li>
+                    <li>Desenhe (à mão ou digitalmente) a forma de onda da tensão sobre a carga para três ângulos de disparo diferentes: α ≈ 30°, α ≈ 90° e α ≈ 150°. Indique em cada caso a fração aproximada de potência entregue.</li>
+                    <li>Quais são as limitações do controle por ângulo de fase? Para quais tipos de carga ele <strong>não é recomendado</strong> e por quê?</li>
+                    <li>Pesquise a relação matemática entre o ângulo de disparo α e a tensão eficaz na carga (fórmula da tensão RMS com controle de fase).</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- ATIVIDADE 2 -->
+        <div class="activity-card act-blue">
+            <div class="activity-number">Atividade 02</div>
+            <h3>Estudo do TRIAC — BTA16-600B</h3>
+            <p>Consulte o <strong>datasheet oficial</strong> do TRIAC BTA16-600B (fabricante STMicroelectronics ou equivalente) e responda:</p>
+            <div class="question-box blue">
+                <h4>Questões Orientadoras</h4>
+                <ol>
+                    <li>O que é um TRIAC? Explique sua estrutura interna (equivalente a dois SCRs antiparalelos) e seu símbolo esquemático. Identifique os terminais MT1, MT2 e Gate.</li>
+                    <li>Quais são os <strong>quatro quadrantes de operação</strong> do TRIAC? Em quais quadrantes o BTA16-600B pode ser disparado?</li>
+                    <li>Do datasheet, extraia e organize em uma tabela os seguintes parâmetros: V<sub>DRM</sub>, I<sub>T(RMS)</sub>, I<sub>GT</sub>, V<sub>GT</sub>, I<sub>H</sub> (corrente de manutenção), I<sub>TSM</sub> e T<sub>j(max)</sub>.</li>
+                    <li>O que significa a letra "<strong>B</strong>" no código BTA16-600B? Qual a diferença entre as séries BTA e BTB?</li>
+                    <li>Por que o TRIAC é preferido em relação a dois SCRs antiparalelos em circuitos dimmers de baixa/média potência?</li>
+                    <li>Qual a corrente nominal da carga de 1500 W em 220 V? Mostre o cálculo e justifique a escolha do BTA16-600B (margem de segurança).</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- ATIVIDADE 3 -->
+        <div class="activity-card act-green">
+            <div class="activity-number">Atividade 03</div>
+            <h3>Estudo do DIAC e do Circuito de Disparo</h3>
+            <p>Pesquise o funcionamento do DIAC (sugestão: DB3) e analise a rede RC de temporização.</p>
+            <div class="question-box green">
+                <h4>Questões Orientadoras</h4>
+                <ol>
+                    <li>O que é um DIAC? Desenhe sua curva característica V×I e identifique a <strong>tensão de breakover</strong> (V<sub>BO</sub>).</li>
+                    <li>Qual é a tensão de breakover típica do DB3? Por que o DIAC é importante para garantir um <strong>disparo simétrico</strong> nos dois semiciclos?</li>
+                    <li>Descreva passo a passo como a rede RC (RV1 + R1 + C1) controla o instante de disparo do DIAC a cada semiciclo.</li>
+                    <li>Qual a <strong>constante de tempo τ</strong> do circuito RC para a posição de resistência mínima (R1 = 22 kΩ) e para a posição de resistência máxima (RV1 + R1 = 242 kΩ)? Mostre os cálculos.</li>
+                    <li>O que aconteceria se o DIAC fosse removido do circuito e o capacitor C1 fosse conectado diretamente ao gate do TRIAC? Quais problemas práticos ocorreriam?</li>
+                    <li>Qual a função do resistor fixo R1 (22 kΩ / 1 W)? O que aconteceria se ele fosse removido do circuito?</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- ATIVIDADE 4 -->
+        <div class="activity-card act-purple">
+            <div class="activity-number">Atividade 04</div>
+            <h3>Proteção do Circuito — Fusível e Varistor (MOV)</h3>
+            <p>Investigue os dispositivos de proteção presentes no circuito: fusível F1 e varistor MOV S14K275.</p>
+            <div class="question-box purple">
+                <h4>Questões Orientadoras</h4>
+                <ol>
+                    <li>Por que o fusível F1 tem capacidade de 10 A se a corrente nominal da carga é ≈ 6,82 A? Justifique a margem adotada e explique a diferença entre fusível de <strong>ação rápida</strong> e ação retardada.</li>
+                    <li>O que é um varistor (MOV)? Explique o princípio de funcionamento baseado em óxido de zinco (ZnO).</li>
+                    <li>Do código <strong>S14K275</strong>, decodifique cada parte: o que significam "S", "14", "K" e "275"?</li>
+                    <li>Qual a tensão de operação contínua máxima (AC) do S14K275? Por que ele é adequado para uma rede de 220 V?</li>
+                    <li>Qual a <strong>tensão de clamping</strong> do MOV durante um surto? Essa tensão é segura para os demais componentes?</li>
+                    <li>Onde o varistor deve ser posicionado no circuito — antes ou depois do fusível? Justifique.</li>
+                    <li>Os varistores se degradam com o tempo? Pesquise o conceito de <strong>envelhecimento do MOV</strong> e suas implicações.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- ATIVIDADE 5 -->
+        <div class="activity-card act-red">
+            <div class="activity-number">Atividade 05</div>
+            <h3>Dimensionamento Térmico — Dissipador de Calor</h3>
+            <p>O TRIAC BTA16-600B dissipa energia na forma de calor. Pesquise como dimensionar o dissipador adequado.</p>
+            <div class="question-box red">
+                <h4>Questões Orientadoras</h4>
+                <ol>
+                    <li>O que é <strong>resistência térmica</strong> (R<sub>θ</sub>)? Explique a analogia com a lei de Ohm (circuito térmico equivalente).</li>
+                    <li>Do datasheet do BTA16-600B, encontre: R<sub>θjc</sub> (junção-cápsula) e R<sub>θca</sub> (cápsula-ambiente, com e sem dissipador).</li>
+                    <li>Se a dissipação estimada no TRIAC é de ≈ 9 W e a temperatura ambiente máxima é 40 °C, calcule a resistência térmica máxima do dissipador (R<sub>θha</sub>) para manter T<sub>j</sub> ≤ 125 °C. Mostre todos os cálculos.</li>
+                    <li>O projeto especifica R<sub>θha</sub> ≤ 4 °C/W. Esse valor é coerente com seu cálculo? Comente.</li>
+                    <li>O BTA16-600B possui tab <strong>isolado</strong> (série BTA). Qual a vantagem prática na montagem em dissipador compartilhado?</li>
+                    <li>Pesquise: o que é pasta térmica e qual sua importância na interface TRIAC-dissipador?</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- ATIVIDADE 6 -->
+        <div class="activity-card act-yellow">
+            <div class="activity-number">Atividade 06</div>
+            <h3>Dimensionamento Elétrico e Verificação de Projeto</h3>
+            <p>Analise criticamente os valores dos componentes escolhidos e verifique se o dimensionamento está correto.</p>
+            <div class="question-box yellow">
+                <h4>Questões Orientadoras</h4>
+                <ol>
+                    <li>Calcule a corrente nominal da carga: I = P / V. O resultado é ≈ 6,82 A? O fusível de 10 A e o TRIAC de 16 A estão corretamente dimensionados?</li>
+                    <li>O capacitor C1 tem tensão nominal de 400 V. Por que não basta um capacitor de 250 V se a rede é 220 V<sub>RMS</sub>? Calcule a tensão de pico da rede (V<sub>pico</sub> = V<sub>RMS</sub> × √2) e justifique.</li>
+                    <li>Qual a potência dissipada no resistor R1 (22 kΩ) na pior condição? A especificação de 1 W é adequada?</li>
+                    <li>Por que o potenciômetro RV1 foi dimensionado em 220 kΩ para a rede 220 V (e não outro valor)? O que aconteceria com um potenciômetro de 100 kΩ?</li>
+                    <li>Calcule a bitola mínima do fio condutor para uma corrente de ≈ 6,82 A segundo a norma NBR 5410. O projeto sugere 1,5 mm² — está correto?</li>
+                    <li>Pesquise: por que a largura mínima da trilha da placa de circuito impresso deve ser 4,0 mm para este circuito?</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- ATIVIDADE 7 -->
+        <div class="activity-card act-cyan">
+            <div class="activity-number">Atividade 07</div>
+            <h3>Segurança Elétrica e Normas Técnicas</h3>
+            <p>Este circuito opera na rede elétrica. A segurança é uma <strong>competência essencial</strong> para o profissional da área.</p>
+            <div class="question-box blue">
+                <h4>Questões Orientadoras</h4>
+                <ol>
+                    <li>Por que é <strong>obrigatório usar knob de plástico</strong> no potenciômetro deste circuito? Qual o risco de um knob metálico?</li>
+                    <li>Este circuito possui <strong>isolação galvânica</strong> da rede elétrica? O que isso implica para a segurança do operador?</li>
+                    <li>Pesquise os efeitos fisiológicos da corrente elétrica no corpo humano (limiar de percepção, contração muscular, fibrilação cardíaca). Qual o nível de corrente considerado perigoso?</li>
+                    <li>Quais <strong>EPIs</strong> (Equipamentos de Proteção Individual) e <strong>EPCs</strong> (Equipamentos de Proteção Coletiva) devem ser utilizados ao trabalhar com este circuito?</li>
+                    <li>Pesquise a norma <strong>NR-10</strong> (Segurança em Instalações e Serviços em Eletricidade). Liste pelo menos 5 medidas de segurança aplicáveis ao laboratório.</li>
+                    <li>Em caso de choque elétrico em um colega no laboratório, quais os <strong>primeiros procedimentos</strong> a serem adotados?</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMATO DE ENTREGA -->
+    <section class="section">
+        <div class="section-header">
+            <div class="section-icon purple">📑</div>
+            <h2 class="section-title">Formato de Entrega</h2>
+        </div>
+        <div class="card">
+            <h3>Estrutura do Relatório</h3>
+            <p>O trabalho deve ser entregue em formato de <strong>relatório técnico</strong> (impresso ou digital, conforme orientação do professor), contendo:</p>
+            <ol style="margin-top: 14px;">
+                <li><strong>Capa</strong> — Identificação do aluno, disciplina, turma e data.</li>
+                <li><strong>Introdução</strong> — Breve contextualização do projeto e do objetivo do trabalho investigativo.</li>
+                <li><strong>Desenvolvimento</strong> — Respostas fundamentadas a todas as 7 atividades, com cálculos detalhados, diagramas, tabelas e referências ao datasheet.</li>
+                <li><strong>Esquema Elétrico Redesenhado</strong> — Reproduza o esquemático do circuito à mão ou em ferramenta CAD, identificando <strong>todos</strong> os componentes e seus valores.</li>
+                <li><strong>Conclusão</strong> — Síntese dos aprendizados e reflexão sobre a importância do estudo prévio antes da montagem.</li>
+                <li><strong>Referências Bibliográficas</strong> — Datasheets, normas técnicas, livros e artigos consultados (formato ABNT).</li>
+            </ol>
+        </div>
+
+        <div class="card" style="margin-top: 12px;">
+            <h3>Dicas Importantes</h3>
+            <ul>
+                <li>📖 Consulte os datasheets oficiais — eles são a fonte primária de informação técnica.</li>
+                <li>📐 Mostre todos os cálculos com unidades — não apresente apenas resultados.</li>
+                <li>✍️ Desenhos e diagramas são valorizados — use-os para ilustrar suas explicações.</li>
+                <li>🔗 Cite suas fontes — demonstre capacidade de pesquisa autônoma.</li>
+                <li>💡 Vá além do mínimo — pesquisar curiosidades e aplicações extras demonstra competência.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- CRITÉRIOS DE AVALIAÇÃO -->
+    <section class="section">
+        <div class="section-header">
+            <div class="section-icon yellow">⭐</div>
+            <h2 class="section-title">Critérios de Avaliação</h2>
+        </div>
+        <div class="card">
+            <p>A avaliação será baseada nos seguintes critérios:</p>
+            <div class="criteria-grid">
+                <div class="criteria-item">
+                    <div class="weight">25%</div>
+                    <div class="label">Fundamentação Teórica<br><small style="color: var(--text-muted);">Profundidade e precisão técnica</small></div>
+                </div>
+                <div class="criteria-item">
+                    <div class="weight">25%</div>
+                    <div class="label">Cálculos e Dimensionamento<br><small style="color: var(--text-muted);">Correção e apresentação</small></div>
+                </div>
+                <div class="criteria-item">
+                    <div class="weight">20%</div>
+                    <div class="label">Análise Crítica<br><small style="color: var(--text-muted);">Justificativas e reflexões</small></div>
+                </div>
+                <div class="criteria-item">
+                    <div class="weight">15%</div>
+                    <div class="label">Diagramas e Figuras<br><small style="color: var(--text-muted);">Qualidade e clareza visual</small></div>
+                </div>
+                <div class="criteria-item">
+                    <div class="weight">15%</div>
+                    <div class="label">Normas e Referências<br><small style="color: var(--text-muted);">Fontes e formatação ABNT</small></div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPETÊNCIAS -->
+    <section class="section">
+        <div class="section-header">
+            <div class="section-icon red">🧠</div>
+            <h2 class="section-title">Competências Desenvolvidas</h2>
+        </div>
+        <div class="card">
+            <p>Ao concluir este trabalho investigativo, espera-se que o aluno tenha desenvolvido:</p>
+            <ul style="margin-top: 14px;">
+                <li><strong>Leitura e interpretação de datasheets</strong> — habilidade essencial na indústria eletrônica.</li>
+                <li><strong>Capacidade de dimensionamento</strong> — selecionar componentes com margens de segurança adequadas.</li>
+                <li><strong>Análise de circuitos de potência</strong> — compreender o controle por ângulo de fase e suas implicações.</li>
+                <li><strong>Consciência sobre segurança elétrica</strong> — identificar riscos e adotar medidas preventivas.</li>
+                <li><strong>Pensamento crítico</strong> — questionar escolhas de projeto e propor justificativas técnicas.</li>
+                <li><strong>Pesquisa técnica autônoma</strong> — localizar e sintetizar informações de fontes confiáveis.</li>
+                <li><strong>Projeto térmico básico</strong> — dimensionar dissipadores usando modelos de resistência térmica.</li>
+                <li><strong>Conhecimento de normas técnicas</strong> — NR-10, NBR 5410 e boas práticas de projeto.</li>
+            </ul>
+        </div>
+    </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    IFB – Instituto Federal de Brasília · Campus Ceilândia · Eletrônica de Potência<br>
+    Prof. Ricardo Frangiosi de Moura · 2026
+</footer>
+
+</body>
+</html>
